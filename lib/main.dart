@@ -45,68 +45,55 @@ class _StockChartScreenState extends State<StockChartScreen> {
       body: Column(
         children: [
           Expanded(
-              flex: 2,
-              child: SfCartesianChart(
-                primaryXAxis: DateTimeAxis(
-                  minimum: DateTime(2016, 01, 01),
-                  maximum: DateTime(2017, 12, 31),
-                  intervalType: DateTimeIntervalType.months,
-                  majorGridLines: MajorGridLines(width: 0),
-                ),
-                primaryYAxis: NumericAxis(
-                  minimum: 70,
-                  maximum: 130,
-                  interval: 15,
-                  opposedPosition: true,
-                ),
-                axes: <ChartAxis>[
-                  NumericAxis(
-                    name: 'volumeAxis', // Secondary Y-axis for volume
-                    title: AxisTitle(text: 'Volume'),
-                    opposedPosition: true, // Moves the Y-axis to the right
-                    minimum: 0,
-                    maximum: 1000000, // Adjust based on your volume data
-                    interval: 200000,
-                  ),
-                ],
-                series: <ChartSeries>[
-                  // Price Candlestick Chart
-                  CandleSeries<StockData, DateTime>(
-                    dataSource: stockData,
-                    xValueMapper: (StockData data, _) => data.date,
-                    lowValueMapper: (StockData data, _) => data.low,
-                    highValueMapper: (StockData data, _) => data.high,
-                    openValueMapper: (StockData data, _) => data.open,
-                    closeValueMapper: (StockData data, _) => data.close,
-                    name: 'Price',
-                    bearColor: Colors.red,
-                    bullColor: Colors.green,
-                    enableSolidCandles: true,
-                  ),
-                  // Volume Bar Chart with a Secondary Y-Axis
-                  ColumnSeries<StockData, DateTime>(
-                    dataSource: stockData,
-                    xValueMapper: (StockData data, _) => data.date,
-                    yValueMapper: (StockData data, _) => data.volume,
-                    color: Colors.blue,
-                    yAxisName: 'volumeAxis', // Link to secondary Y-axis
-                  ),
-                ],
-              )),
-          // Expanded(
-          //   child: SfCartesianChart(
-          //     primaryXAxis: DateTimeAxis(),
-          //     primaryYAxis: NumericAxis(),
-          //     series: <ColumnSeries<StockData, DateTime>>[
-          //       ColumnSeries<StockData, DateTime>(
-          //         dataSource: stockData,
-          //         xValueMapper: (StockData data, _) => data.date,
-          //         yValueMapper: (StockData data, _) => data.volume,
-          //         color: Colors.blue,
-          //       )
-          //     ],
-          //   ),
-          // ),
+            flex: 4,
+            child: SfCartesianChart(
+              title: ChartTitle(text: 'Stock'),
+              trackballBehavior: _trackballBehavior,
+              primaryXAxis: DateTimeAxis(
+                minimum: DateTime(2016, 01, 01),
+                maximum: DateTime(2017, 12, 31),
+                intervalType: DateTimeIntervalType.months,
+              ),
+              primaryYAxis: NumericAxis(
+                minimum: 70,
+                maximum: 130,
+                interval: 15,
+                opposedPosition: true,
+              ),
+              zoomPanBehavior: ZoomPanBehavior(
+                enablePinching: true,
+                enablePanning: true,
+                enableDoubleTapZooming: true,
+              ),
+              series: <CandleSeries<StockData, DateTime>>[
+                CandleSeries<StockData, DateTime>(
+                  enableSolidCandles: true,
+                  // bullColor: Colors.black,
+                  // bearColor: Colors.red,
+                  dataSource: stockData,
+                  xValueMapper: (StockData data, _) => data.date,
+                  lowValueMapper: (StockData data, _) => data.low,
+                  highValueMapper: (StockData data, _) => data.high,
+                  openValueMapper: (StockData data, _) => data.open,
+                  closeValueMapper: (StockData data, _) => data.close,
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            child: SfCartesianChart(
+              primaryXAxis: DateTimeAxis(),
+              primaryYAxis: NumericAxis(),
+              series: <ColumnSeries<StockData, DateTime>>[
+                ColumnSeries<StockData, DateTime>(
+                  dataSource: stockData,
+                  xValueMapper: (StockData data, _) => data.date,
+                  yValueMapper: (StockData data, _) => data.volume,
+                  color: Colors.blue,
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -1258,5 +1245,3 @@ List<StockData> getStockData() {
 
 //   StockData(this.day, this.open, this.high, this.low, this.close, this.volume);
 // }
-
-// OHLC and volume in same chart.
