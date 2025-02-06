@@ -1258,3 +1258,5 @@ List<StockData> getStockData() {
 
 //   StockData(this.day, this.open, this.high, this.low, this.close, this.volume);
 // }
+
+// OHLC and volume in same chart.
