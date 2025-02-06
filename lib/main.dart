@@ -3,11 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import 'dart:convert';
-import 'dart:math';
-import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-
 class StockData {
   final DateTime date;
   final double open, high, low, close;
@@ -24,7 +19,7 @@ class StockData {
 
 class Stock {
   String? s;
-  List<int>? t;
+  List<DateTime>? t;
   List<double>? o;
   List<double>? h;
   List<double>? l;
@@ -35,7 +30,10 @@ class Stock {
 
   Stock.fromJson(Map<String, dynamic> json) {
     s = json['s'];
-    t = json['t'].cast<int>();
+    // t = json['t'].cast<DateTime>();
+    t = (json['t'] as List<dynamic>)
+        .map((value) => DateTime.parse(value))
+        .toList();
     o = json['o'].cast<double>();
     h = json['h'].cast<double>();
     l = json['l'].cast<double>();
@@ -81,12 +79,12 @@ class _StockChartScreenState extends State<StockChartScreen> {
   String jsonString = '''{
     "s": "ok",
     "t": [
-        1669906800,
-        1670166000,
-        1670252400,
-        1683039600,
-        1683126000,
-        1738767600
+        "2016-01-01 00:00:00.000",
+        "2016-01-08 00:00:00.000",
+        "2016-01-23 00:00:00.000",
+        "2016-01-12 00:00:00.000",
+        "2016-01-05 00:00:00.000",
+        "2016-01-07 00:00:00.000"
     ],
     "o": [
         1156.4,
@@ -154,16 +152,19 @@ class _StockChartScreenState extends State<StockChartScreen> {
       DateTime randomDate =
           DateTime(2016, 1, 1).add(Duration(days: random.nextInt(30)));
 
+      print(randomDate);
+
       // Use stock data from the JSON
       double open = stock.o![i];
       double high = stock.h![i]; // Ensure it's a double
       double low = stock.l![i];
       double close = stock.c![i];
-      int volume = stock.v![i]; // Volume from JSON
+      int volume = stock.v![i];
+      DateTime date = stock.t![i]; // Volume from JSON
 
       // Create StockData instance and add it to the list
       StockData stockData = StockData(
-        date: randomDate,
+        date: date,
         open: open,
         high: high,
         low: low,
@@ -221,7 +222,7 @@ class _StockChartScreenState extends State<StockChartScreen> {
               primaryXAxis: DateTimeAxis(
                 minimum: DateTime(2016, 01, 01),
                 maximum: DateTime(2016, 2, 31),
-                intervalType: DateTimeIntervalType.months,
+                intervalType: DateTimeIntervalType.days,
               ),
               primaryYAxis: NumericAxis(),
               series: <ColumnSeries<StockData, DateTime>>[
