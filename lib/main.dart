@@ -149,14 +149,14 @@ class _StockChartScreenState extends State<StockChartScreen> {
     Random random = Random();
     List<StockData> stockDataList = [];
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 6; i++) {
       // Random date, for example from 2016-01-01 to 2016-12-31
       DateTime randomDate =
           DateTime(2016, 1, 1).add(Duration(days: random.nextInt(30)));
 
       // Use stock data from the JSON
       double open = stock.o![i];
-      double high = stock.h![i] as double; // Ensure it's a double
+      double high = stock.h![i]; // Ensure it's a double
       double low = stock.l![i];
       double close = stock.c![i];
       int volume = stock.v![i]; // Volume from JSON
