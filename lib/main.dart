@@ -103,13 +103,6 @@ class _StockChartScreenState extends State<StockChartScreen> {
       stock = await fetchStocks();
       // Debugging: Print the contents of the stock object
       if (stock != null) {
-        // print('Stock data loaded:');
-        // print('Open: ${stock!.o}');
-        // print('High: ${stock!.h}');
-        // print('Low: ${stock!.l}');
-        // print('Close: ${stock!.t}');
-        // print('Volume: ${stock!.v}');
-        // print('Dates: ${stock!.t}');
         setState(() {
           stockData = getStockData();
         });
@@ -121,11 +114,30 @@ class _StockChartScreenState extends State<StockChartScreen> {
     }
   }
 
+  // Future<void> fetchStockSymbols() async {
+  //   final url = Uri.parse("https://dev.nepsetrends.com/api/chart/symbols");
+
+  //   try {
+  //     final response = await http.get(url);
+
+  //     if (response.statusCode == 200) {
+  //       List<dynamic> data = jsonDecode(response.body);
+
+  //       print("Fetched Data: $data");
+  //     } else {
+  //       print("Failed to fetch data: ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     print("Error: $e");
+  //   }
+  // }
+
   @override
   void initState() {
     super.initState();
     print('chdskflkdsfjldsjfljdslfkjdslkfjsk');
     fetchStockData();
+    // fetchStockSymbols();
 
     _trackballBehavior = TrackballBehavior(
         enable: true, activationMode: ActivationMode.longPress);
