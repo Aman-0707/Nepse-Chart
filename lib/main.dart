@@ -114,24 +114,6 @@ class _StockChartScreenState extends State<StockChartScreen> {
     }
   }
 
-  // Future<void> fetchStockSymbols() async {
-  //   final url = Uri.parse("https://dev.nepsetrends.com/api/chart/symbols");
-
-  //   try {
-  //     final response = await http.get(url);
-
-  //     if (response.statusCode == 200) {
-  //       List<dynamic> data = jsonDecode(response.body);
-
-  //       print("Fetched Data: $data");
-  //     } else {
-  //       print("Failed to fetch data: ${response.statusCode}");
-  //     }
-  //   } catch (e) {
-  //     print("Error: $e");
-  //   }
-  // }
-
   @override
   void initState() {
     super.initState();
