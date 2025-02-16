@@ -1,70 +1,70 @@
-name: Build Flutter APK
+# name: Build Flutter APK
 
-on:
-  push:
-    branches:
-      - main # Replace 'main' with your default branch if different
-  pull_request:
+# on:
+#   push:
+#     branches:
+#       - main # Replace 'main' with your default branch if different
+#   pull_request:
 
-permissions:
-  contents: write
+# permissions:
+#   contents: write
 
-jobs:
-  build-apk:
-    runs-on: ubuntu-latest
+# jobs:
+#   build-apk:
+#     runs-on: ubuntu-latest
 
-    steps:
-      # Step 1: Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+#     steps:
+#       # Step 1: Checkout repository
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
 
-      # Step 2: Install Flutter
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.2' # Update if needed
+#       # Step 2: Install Flutter
+#       - name: Set up Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           flutter-version: '3.22.2' # Update if needed
 
-      # Step 3: Clean & Upgrade Gradle
-      - name: Clean & Upgrade Gradle
-        run: |
-          flutter clean
-          flutter pub get
-          cd android
-          ./gradlew wrapper --gradle-version 8.2
-          cd ..
+#       # Step 3: Clean & Upgrade Gradle
+#       - name: Clean & Upgrade Gradle
+#         run: |
+#           flutter clean
+#           flutter pub get
+#           cd android
+#           ./gradlew wrapper --gradle-version 8.2
+#           cd ..
 
-      # Step 4: Install dependencies
-      - name: Install dependencies
-        run: flutter pub get
+#       # Step 4: Install dependencies
+#       - name: Install dependencies
+#         run: flutter pub get
 
-      # Step 5: Build APK
-      - name: Build APK
-        run: flutter build apk --release
+#       # Step 5: Build APK
+#       - name: Build APK
+#         run: flutter build apk --release
 
-      # Step 6: Get SHA-1 from APK
-      - name: Get SHA-1 from APK
-        run: |
-          if [ -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
-            keytool -printcert -jarfile build/app/outputs/flutter-apk/app-release.apk
-          else
-            echo "APK file not found!"
-            exit 1
-          fi
+#       # Step 6: Get SHA-1 from APK
+#       - name: Get SHA-1 from APK
+#         run: |
+#           if [ -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
+#             keytool -printcert -jarfile build/app/outputs/flutter-apk/app-release.apk
+#           else
+#             echo "APK file not found!"
+#             exit 1
+#           fi
 
-      # Step 7: Upload APK as an artifact
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+#       # Step 7: Upload APK as an artifact
+#       - name: Upload APK
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: app-release-apk
+#           path: build/app/outputs/flutter-apk/app-release.apk
 
-      # Step 8: Push to GitHub Release
-      - name: Push to Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/flutter-apk/app-release.apk"
-          tag: v0.${{github.run_number}}
-          name: "Release v0.${{github.run_number}}"
-          body: "This is the ${{github.run_number}} release of the app."
-          draft: false
-          prerelease: false
+#       # Step 8: Push to GitHub Release
+#       - name: Push to Release
+#         uses: ncipollo/release-action@v1
+#         with:
+#           artifacts: "build/app/outputs/flutter-apk/app-release.apk"
+#           tag: v0.${{github.run_number}}
+#           name: "Release v0.${{github.run_number}}"
+#           body: "This is the ${{github.run_number}} release of the app."
+#           draft: false
+#           prerelease: false
